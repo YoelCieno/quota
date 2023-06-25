@@ -72,6 +72,11 @@ const onClick = () => {
     &:hover {
       background-color: transparentize($color-primary-blue-1_3, 0.1);
     }
+    &:disabled {
+      background-color: $color-gray-disabled;
+      color: $color-gray-disabled-1;
+      cursor: default;
+    }
     &-less .title {
       vertical-align: top;
       line-height: 1;

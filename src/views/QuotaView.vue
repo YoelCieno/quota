@@ -3,13 +3,18 @@ import BaseModal from '@/components/modal/BaseModal.vue';
 import BaseCounter from '@/components/BaseCounter.vue';
 import BaseSelector from '@/components/select/BaseSelector.vue';
 import BaseButton from '@/components/BaseButton.vue';
-import { onBeforeMount } from 'vue';
+import { onBeforeMount, ref, computed } from 'vue';
 import useModal from '@/components/modal/useModal';
 import { modalName } from '@/composables';
+import type { IdText } from '@/components/select/models';
  
 const { openModal, closeModal } = useModal();
 
 const options = [{ id: '1', text: 'test 1'}, { id: '2', text: 'test 2'}];
+
+const reason = ref<IdText>();
+
+const disabledCounter = computed(() => !reason.value)
 
 onBeforeMount(() => {
   openModal(modalName);
@@ -19,16 +24,24 @@ const modalAction = () => {
   closeModal(modalName);
 };
 
+
+const onInputReason = (option: IdText) => {
+  reason.value = option;
+};
+
 </script>
 <template>
   <BaseModal title="Edit flights"
              :modal-name="modalName">
     <template #body>
       <div class="quota__body">
-        <label class="text-h6">Add or remove Flight from the subscriber</label>
+        <label class="text-h6">Add or remove flights from the subscriber</label>
         <div class="quota__form-row">
-         <BaseCounter />
-          <BaseSelector :options="options"/>
+         <BaseCounter title="Flight lefts"
+                      :disabled="disabledCounter" />
+          <BaseSelector placeholder="Select a reason"
+                        :options="options"
+                        @input="onInputReason" />
         </div>
       </div>
     </template>

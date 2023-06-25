@@ -3,6 +3,7 @@ import BaseButton from '@/components/BaseButton.vue';
 import { ref } from 'vue';
 
 withDefaults(defineProps<{
+  disabled?: boolean,
   title?: string,
 }>(), {
   title: 'Counter Title'
@@ -26,10 +27,12 @@ const onClickAdd = () => {
     <div class="counter__box">
       <BaseButton title="-"
                   :class-modifiers="['icon', 'icon-less']"
+                  :disabled="disabled"
                   @click="onClickLess" />
       <span class="counter__number">{{ counter }}</span>
       <BaseButton title="+"
                   :class-modifiers="['icon']"
+                  :disabled="disabled"
                   @click="onClickAdd" />
     </div>
   </div>

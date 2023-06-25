@@ -31,7 +31,7 @@ const { isModalOpen, closeModal } = useModal();
             class="close-button"
             aria-hidden="true"
             @click="closeModal(modalName)"
-      >X</span>
+      >x</span>
     </header>
       <section id="modal-body">
         <slot name="body">Body goes here ...</slot>

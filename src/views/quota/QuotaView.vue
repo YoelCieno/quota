@@ -10,34 +10,47 @@ import type { IdText } from '@/components/select/models';
  
 const { openModal, closeModal } = useModal();
 
+
+// https://mocki.io/v1/68dc88df-74c8-4c51-997a-253cd3109d16
 const options = [{ id: '1', text: 'test 1'}, { id: '2', text: 'test 2'}];
 
 const reason = ref<IdText>();
+const initialQuota = ref(2);
 
-const disabledCounter = computed(() => !reason.value)
+const disabledCounter = computed(() => !reason.value);
+const disabledSave = computed(() => !reason.value);
 
 onBeforeMount(() => {
   openModal(modalName);
 })
 
-const modalAction = () => {
+const onSaveChanges = () => {
+  reason.value = undefined;
   closeModal(modalName);
 };
 
-
+/**
+ * @param option
+ */
 const onInputReason = (option: IdText) => {
   reason.value = option;
+};
+
+const onCloseCross = () => {
+  reason.value = undefined;
 };
 
 </script>
 <template>
   <BaseModal title="Edit flights"
-             :modal-name="modalName">
+             :modal-name="modalName"
+             @close-cross="onCloseCross">
     <template #body>
       <div class="quota__body">
         <label class="text-h6">Add or remove flights from the subscriber</label>
         <div class="quota__form-row">
          <BaseCounter title="Flight lefts"
+                      :default-count="initialQuota"
                       :disabled="disabledCounter" />
           <BaseSelector placeholder="Select a reason"
                         :options="options"
@@ -49,7 +62,8 @@ const onInputReason = (option: IdText) => {
       <div class="quota__footer">
         <BaseButton  title="SAVE CHANGES"
                      :class-modifiers="['medium-wide', 'primary']"
-                     @click="modalAction"
+                     :disabled="disabledSave"
+                     @click="onSaveChanges"
         />
       </div>
     </template>

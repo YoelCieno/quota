@@ -28,6 +28,9 @@ onBeforeMount(() => {
   selected.value = currentDefault ? currentDefault : currentDefaultOption;
 })
 
+/**
+ * @param option 
+ */
 const onClickOption = (option: IdText) => {
   selected.value = option.id;
   open.value = false;

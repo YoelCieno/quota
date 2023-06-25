@@ -1,14 +1,19 @@
-
 <script setup lang="ts">
 import useModal from '@/components/modal/useModal';
 
-defineProps<{
+const props = defineProps<{
   modalName: string,
   hideCloseCross?: boolean,
   title?: string,
 }>();
+const emit = defineEmits<{(e: 'close-cross'): void }>();
 
 const { isModalOpen, closeModal } = useModal();
+
+const onCloseCross = () => {
+  emit('close-cross');
+  closeModal(props.modalName);
+};
 </script>
 
 <template>
@@ -30,7 +35,7 @@ const { isModalOpen, closeModal } = useModal();
       <span v-if="!hideCloseCross"
             class="close-button"
             aria-hidden="true"
-            @click="closeModal(modalName)"
+            @click="onCloseCross"
       >x</span>
     </header>
       <section id="modal-body">

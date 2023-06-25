@@ -58,7 +58,7 @@ const onClick = () => {
     &:disabled {
       background-color: $color-gray-disabled;
       color: $color-gray-disabled-1;
-      cursor: default;
+      cursor: not-allowed;
     }
   }
   &--icon {
@@ -75,7 +75,7 @@ const onClick = () => {
     &:disabled {
       background-color: $color-gray-disabled;
       color: $color-gray-disabled-1;
-      cursor: default;
+      cursor: not-allowed;
     }
     &-less .title {
       vertical-align: top;

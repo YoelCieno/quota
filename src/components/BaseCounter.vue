@@ -2,16 +2,18 @@
 import BaseButton from '@/components/BaseButton.vue';
 import { ref } from 'vue';
 
-withDefaults(defineProps<{
+const props = withDefaults(defineProps<{
+  defaultCount?: number,
   disabled?: boolean,
   title?: string,
 }>(), {
-  title: 'Counter Title'
+  defaultCount: 0,
+  title: 'Counter Title',
 })
 
-const counter = ref(0);
+const counter = ref(props.defaultCount);
 
-const onClickLess = () => {
+const onClickRemove = () => {
   if (counter.value > 0) {
     counter.value -= 1;
   }
@@ -28,7 +30,7 @@ const onClickAdd = () => {
       <BaseButton title="-"
                   :class-modifiers="['icon', 'icon-less']"
                   :disabled="disabled"
-                  @click="onClickLess" />
+                  @click="onClickRemove" />
       <span class="counter__number">{{ counter }}</span>
       <BaseButton title="+"
                   :class-modifiers="['icon']"

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import BaseModal from '@/components/modal/BaseModal.vue';
+import BaseSelector from '@/components/select/BaseSelector.vue';
 import BaseButton from '@/components/BaseButton.vue';
 import { onBeforeMount } from 'vue';
 import useModal from '@/components/modal/useModal';
@@ -16,19 +17,23 @@ const modalAction = () => {
   closeModal(modalName);
 };
 
-
 </script>
 <template>
-  <BaseModal :modal-name="modalName">
+  <BaseModal title="Edit Flights"
+             :modal-name="modalName">
     <template #body>
-      <div class="modal-body">
-        <span class="modal-body--title text-h3 text-h3--medium">title</span>
-        <span class="modal-body--content text-h6">content1</span>
-        <span class="modal-body--content text-h6">content2</span>
+      <div class="quota__body">
+        <label class="text-h6">Add or remove Flight from the subscriber</label>
+        <div class="quota__form-row">
+          <div class="quota__counter-box">
+            aafdsf
+          </div>
+          <BaseSelector :options="[{ id: '0', text: 'test 1'}]"/>
+        </div>
       </div>
     </template>
     <template #footer>
-      <div class="modal-footer">
+      <div class="quota__footer">
         <BaseButton :class-modifiers="['medium-wide', 'primary']"
                  title="submitText"
                  @click="modalAction"
@@ -38,32 +43,35 @@ const modalAction = () => {
   </BaseModal>
 </template>
 <style scoped lang="scss">
-.modal-body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 4rem 0;
-  gap: 16px;
-  padding: 0 4rem;
-
-  &--title {
+.quota {
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 0 1.5rem;
     width: 47.6rem;
-    text-align: center;
     color: $color-primary-black;
+    font-size: 15px;
+    &--title {
+      width: 47.6rem;
+      color: $color-primary-black;
+    }
   }
-
-  &--content {
-    width: 47.6rem;
-    text-align: center;
-    color: $color-primary-black;
+  &__form-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 1rem;
   }
-}
-.modal-footer {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  margin: 4rem 0;
-  gap: 16px;
+  &__counter-box {
+    background-color: $color-gray-1;
+  }
+  &__footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 4rem 0;
+    gap: 16px;
+  }
 }
 </style>

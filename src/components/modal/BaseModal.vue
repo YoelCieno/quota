@@ -5,6 +5,7 @@ import useModal from '@/components/modal/useModal';
 defineProps<{
   modalName: string,
   hideCloseCross?: boolean,
+  title?: string,
 }>();
 
 const { isModalOpen, closeModal } = useModal();
@@ -21,12 +22,17 @@ const { isModalOpen, closeModal } = useModal();
          aria-labelledby="modal-header"
          aria-describedby="modal-body"
     >
+    <header class="modal__header">
+      <h2 v-if="title"
+          class="modal__h2">
+        {{ title }}
+      </h2>
       <span v-if="!hideCloseCross"
             class="close-button icon-cross_big"
             aria-hidden="true"
             @click="closeModal(modalName)"
       >X</span>
-
+    </header>
       <section id="modal-body">
         <slot name="body">Body goes here ...</slot>
       </section>
@@ -50,7 +56,6 @@ const { isModalOpen, closeModal } = useModal();
 }
 .modal {
   z-index: $z-index-modal;
-
   position: fixed;
   top: 50%;
   left: 50%;
@@ -58,14 +63,22 @@ const { isModalOpen, closeModal } = useModal();
   background: white;
   box-shadow: 0 1rem 3rem rgba(54, 62, 87, 0.12);
   border-radius: $border-radius-xl;
-}
+  &__header {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+  }
+  &__h2 {
+    margin-left: 0.25rem;
+  }
 
+}
 .close-button {
   cursor: pointer;
-  position: absolute;
   font-size: 1.4rem;
   font-weight: 500;
-  top: 0.25rem;
-  right: 1rem;
+  line-height: 1;
 }
 </style>

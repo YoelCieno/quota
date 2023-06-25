@@ -1,15 +1,27 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import PageTitle from './components/PageTitle.vue'
-</script>
+import useModal from '@/components/modal/useModal';
+import { modalName } from '@/composables';
 
+const { isModalOpen, openModal } = useModal();
+
+const onClickQuota = () => {
+  if (!isModalOpen(modalName)) {
+    openModal(modalName);
+  }
+};
+
+</script>
 <template>
   <header>
     <div class="wrapper">
       <PageTitle msg="User's subscription quota" />
       <nav>
         <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/quota">Subscription quota</RouterLink>
+        <RouterLink to="/quota"
+                    @click="onClickQuota" 
+        >Subscription quota</RouterLink>
       </nav>
     </div>
   </header>

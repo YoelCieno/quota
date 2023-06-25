@@ -1,5 +1,17 @@
+
+<script setup lang="ts">
+import useModal from '@/components/modal/useModal';
+
+defineProps<{
+  modalName: string,
+  hideCloseCross?: boolean,
+}>();
+
+const { isModalOpen, closeModal } = useModal();
+</script>
+
 <template>
-  <div>
+  <div v-if="isModalOpen(modalName)">
     <div id="modal-overlay"
          class="modal-overlay"
     />
@@ -13,7 +25,7 @@
             class="close-button icon-cross_big"
             aria-hidden="true"
             @click="closeModal(modalName)"
-      />
+      >X</span>
 
       <section id="modal-body">
         <slot name="body">Body goes here ...</slot>
@@ -25,18 +37,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import useModal from '@/components/modal/useModal';
-
-defineProps<{
-  modalName: string,
-  hideCloseCross?: boolean,
-}>();
-
-const { closeModal } = useModal();
-</script>
-
 <style lang="scss" scoped>
 .modal-overlay {
   z-index: $z-index-modal-overlay;
@@ -63,8 +63,9 @@ const { closeModal } = useModal();
 .close-button {
   cursor: pointer;
   position: absolute;
-  font-size: 2.4rem;
-  top: 0.5rem;
-  right: 0.5rem;
+  font-size: 1.4rem;
+  font-weight: 500;
+  top: 0.25rem;
+  right: 1rem;
 }
 </style>

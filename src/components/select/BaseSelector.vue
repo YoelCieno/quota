@@ -5,8 +5,10 @@ import type { IdText } from './models';
 const props = withDefaults(defineProps<{
   options: IdText[],
   default?: string,
+  placeholder?: string,
   tabindex?: number,
 }>(), {
+  placeholder: 'Select an option',
   tabindex: 0,
 });
 const emit = defineEmits<{(e: 'input', option: IdText): void}>();
@@ -21,7 +23,8 @@ const selectedText = computed(() => {
 
 onBeforeMount(() => {
   const currentDefault = props.default ? props.default : null;
-  const currentDefaultOption = props.options?.length ? props.options[0].id : null;
+  const currentDefaultOption = props.options.length === 1 ? props.options[0].id : null;
+
   selected.value = currentDefault ? currentDefault : currentDefaultOption;
 })
 
@@ -31,18 +34,27 @@ const onClickOption = (option: IdText) => {
   emit('input', option);
 };
 
+const onClickSelected = () => {
+  open.value = !open.value;
+};
+
+const onBlur = () => {
+  open.value = false;
+};
+
 </script>
 <template>
-  <div class="custom-select"
+  <div class="select"
       :tabindex="tabindex"
-      @blur="open = false"
+      @blur="onBlur"
     >
-    <div class="selected" :class="{ open: open }" @click="open = !open">
-      {{ selectedText }}
+    <div class="selected" :class="{ open: open }" @click.prevent="onClickSelected">
+      {{ selectedText ?? placeholder }}
     </div>
-    <div :class="['items', { 'select-hide': !open }]">
-      <div v-for="(option, i) of options"
-           :key="i"
+    <div :class="['select__options', { select__hide: !open }]">
+      <div v-for="option of options"
+           class="select__option"
+           :key="option.id"
            @click="onClickOption(option)">
         {{ option.text }}
       </div>
@@ -50,16 +62,39 @@ const onClickOption = (option: IdText) => {
   </div>
 </template>
 <style lang="scss" scoped>
-.custom-select {
+.select {
   position: relative;
   width: 100%;
   text-align: left;
   outline: none;
   height: 47px;
   line-height: 47px;
+  &__hide {
+    display: none;
+  }
+  &__options {
+    background-color: white;
+    border-radius: 0 0 6px 6px;
+    overflow: hidden;
+    border-right: 1px solid $color-gray-2;
+    border-left: 1px solid $color-gray-2;
+    border-bottom: 1px solid $color-gray-2;
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: 1;
+  }
+  &__option {
+    padding-left: 1em;
+    cursor: pointer;
+    user-select: none;
+    &:hover {
+      background-color: $color-primary-blue-1_3;
+    }
+  }
   .selected {
     border-radius: 6px;
-    border: 1px solid #666666;
+    border: 1px solid $color-gray-2;
     padding-left: 1em;
     cursor: pointer;
     user-select: none;
@@ -74,37 +109,9 @@ const onClickOption = (option: IdText) => {
       border-color: $color-primary-black transparent transparent transparent;
     }
     &.open {
-      border: 1px solid #ad8225;
-      border-radius: 6px 6px 0px 0px;
+      border: 1px solid $color-gray-2;
+      border-radius: 6px 6px 0 0;
     }
   }
-}
-
-.custom-select .items {
-  color: #fff;
-  border-radius: 0px 0px 6px 6px;
-  overflow: hidden;
-  border-right: 1px solid #ad8225;
-  border-left: 1px solid #ad8225;
-  border-bottom: 1px solid #ad8225;
-  position: absolute;
-  background-color: #0a0a0a;
-  left: 0;
-  right: 0;
-  z-index: 1;
-}
-
-.custom-select .items div {
-  color: #fff;
-  padding-left: 1em;
-  cursor: pointer;
-  user-select: none;
-}
-.custom-select .items div:hover {
-  background-color: #ad8225;
-}
-
-.select-hide {
-  display: none;
 }
 </style>

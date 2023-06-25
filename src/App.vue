@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import PageTitle from './components/PageTitle.vue'
+import BaseTitle from './components/BaseTitle.vue'
 import useModal from '@/components/modal/useModal';
 import { modalName } from '@/composables';
 
@@ -16,7 +16,7 @@ const onClickQuota = () => {
 <template>
   <header>
     <div class="wrapper">
-      <PageTitle msg="User's subscription quota" />
+      <BaseTitle msg="User's subscription quota" />
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/quota"

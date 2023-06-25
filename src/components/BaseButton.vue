@@ -6,7 +6,6 @@
           @click="onClick"
   >
     <span class="title">{{ title }}</span>
-    <slot v-if="hasSlot" />
   </button>
 </template>
 
@@ -16,9 +15,6 @@ import { computed } from 'vue';
 const props = defineProps<{
   classModifiers?: string[];
   disabled?: boolean;
-  hasError?: boolean;
-  hasSlot?: boolean;
-  icon?: string;
   customPrefix?: boolean;
   active?: boolean;
   title?: string;
@@ -27,19 +23,14 @@ const props = defineProps<{
 
 const emit = defineEmits<{ (e: 'update:modelValue', value: boolean): void }>();
 
-const defaultClassName = 'g-button';
+const defaultClassName = 'base-button';
 const computedClasses = computed(() => {
-  const iconPrefix = props.customPrefix ? '' : 'icon-';
   if (!props.classModifiers || !props.classModifiers.length) {
-    return !props.icon ? defaultClassName : `${defaultClassName} ${iconPrefix}${props.icon}`;
+    return `${defaultClassName}`;
   }
   const modifiers = props.classModifiers.map((cm) => `${defaultClassName}--${cm}`).join(' ');
 
-  const baseClasses = !props.icon ? `${defaultClassName} ${modifiers}` : `${defaultClassName} ${modifiers} ${iconPrefix}${props.icon}`;
-
-  const result = props.hasError ? `${baseClasses} has-error` : baseClasses;
-  const isActive = props.active ? ' active' : '';
-  return result + isActive;
+  return `${defaultClassName} ${modifiers}`;
 });
 
 const onClick = () => {
@@ -47,18 +38,16 @@ const onClick = () => {
 };
 
 </script>
-
 <style lang="scss" scoped>
-.g-button {
+.base-button {
   font-weight: 500;
   position: relative;
   cursor: pointer;
-  background-color: $color-primary-green;
   color: white;
   border: 0;
   border-radius: $border-radius-m;
   &--medium-wide {
-    font-size: 1.4rem;
+    font-size: 14px;
     padding: 1rem 2rem;
   }
   &--primary {
@@ -72,31 +61,21 @@ const onClick = () => {
       cursor: default;
     }
   }
-  &--secondary {
-    background-color: $color-secondary-error;
-    color: white;
+  &--icon {
+    color: $color-primary-blue-2;
+    background-color: $color-primary-blue-1_3;
+    border-radius: 100%;
+    font-weight: bold;
+    font-size: 20px;
+    width: 25px;
+    height: 25px;
     &:hover {
-      background-color: $color-secondary-error-hover;
-      border-color: $color-secondary-error-hover;
+      background-color: transparentize($color-primary-blue-1_3, 0.1);
     }
-    &:disabled {
-      background-color: $color-gray-disabled;
-      color: $color-gray-disabled-1;
-      cursor: default;
-    }
-  }
-  &--tertiary {
-    background-color: $color-primary-blue-transparent-header;
-    color: $color-primary-black;
-    &:hover {
-      background-color: rgba($color-primary-blue-transparent-header, 0.03);
-    }
-    &:disabled {
-      background-color: $color-gray-disabled;
-      color: $color-gray-disabled-1;
-      cursor: default;
+    &-less .title {
+      vertical-align: top;
+      line-height: 1;
     }
   }
 }
-
 </style>

@@ -28,7 +28,7 @@ const { isModalOpen, closeModal } = useModal();
         {{ title }}
       </h2>
       <span v-if="!hideCloseCross"
-            class="close-button icon-cross_big"
+            class="close-button"
             aria-hidden="true"
             @click="closeModal(modalName)"
       >X</span>
@@ -62,7 +62,7 @@ const { isModalOpen, closeModal } = useModal();
   transform: translate(-50%, -50%);
   background: white;
   box-shadow: 0 1rem 3rem rgba(54, 62, 87, 0.12);
-  border-radius: $border-radius-xl;
+  border-radius: $border-radius-m;
   &__header {
     display: flex;
     flex-direction: row;

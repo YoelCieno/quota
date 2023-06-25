@@ -1,16 +1,15 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import PageTitle from './components/PageTitle.vue'
 </script>
 
 <template>
   <header>
     <div class="wrapper">
-      <HelloWorld msg="User's subscription quota" />
-
+      <PageTitle msg="User's subscription quota" />
       <nav>
         <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
+        <RouterLink to="/quota">Subscription quota</RouterLink>
       </nav>
     </div>
   </header>
@@ -20,7 +19,6 @@ import HelloWorld from './components/HelloWorld.vue'
 
 <style scoped>
 header {
-  line-height: 1.5;
   max-height: 100vh;
 }
 
@@ -33,7 +31,7 @@ nav {
   width: 100%;
   font-size: 12px;
   text-align: center;
-  margin-top: 2rem;
+  margin-top: 0;
 }
 
 nav a.router-link-exact-active {
@@ -77,7 +75,6 @@ nav a:first-of-type {
     font-size: 1rem;
 
     padding: 1rem 0;
-    margin-top: 1rem;
   }
 }
 </style>

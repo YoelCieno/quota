@@ -1,8 +1,4 @@
-export interface IdTextType {
-  id: string
-  text: string
-  type: string
-}
+import type { IdTextType } from "@/models";
 
 export interface StateQuota {
   quotaOptions: IdTextType[]

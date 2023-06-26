@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import BaseButton from '@/components/BaseButton.vue';
 import { ref } from 'vue';
+import type { Action } from '@/models';
 
 const props = withDefaults(defineProps<{
   defaultCount?: number,
@@ -10,21 +11,21 @@ const props = withDefaults(defineProps<{
   defaultCount: 0,
   title: 'Counter Title',
 })
-const emit = defineEmits<{(e: 'change', counter: number): void}>();
+const emit = defineEmits<{(e: 'change', count: number, action: Action): void }>();
 
 const counter = ref(props.defaultCount);
 
 const onClickRemove = () => {
   if (counter.value > 0) {
     counter.value -= 1;
-    emit('change', counter.value);
+    emit('change', counter.value, 'remove');
   }
 };
 
 const onClickAdd = () => {
   if (counter.value < 3) {
     counter.value += 1;
-    emit('change', counter.value);
+    emit('change', counter.value, 'add');
   }
 };
 </script>

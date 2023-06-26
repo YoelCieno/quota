@@ -1,32 +1,35 @@
 <script setup lang="ts">
 import BaseModal from '@/components/modal/BaseModal.vue';
 import BaseCounter from '@/components/BaseCounter.vue';
-import BaseSelector from '@/components/select/BaseSelector.vue';
+import BaseSelector from '@/components/BaseSelector.vue';
 import BaseButton from '@/components/BaseButton.vue';
 import { onBeforeMount, ref, computed } from 'vue';
 import useModal from '@/components/modal/useModal';
 import { modalName } from '@/composables';
 import { useStoreQuota } from '@/stores';
-import { storeToRefs } from 'pinia';
-import type { IdTextType } from '@/components/select/models';
+import type { IdTextType, Action } from '@/models';
  
 const { openModal, closeModal } = useModal();
 
-
 const storeQuota = useStoreQuota();
 
-const { quotaOptions } = storeToRefs(storeQuota);
-
 const reason = ref<IdTextType>();
-const initialQuota = ref(1);
+const baseSelectorRef = ref<InstanceType< typeof BaseSelector>>();
+const quotaOptions = ref<IdTextType[]>([]);
+const editAction = ref<Action>();
 
-const disabledCounter = computed(() => !reason.value);
+const initialQuota = 1;
+const flights = ref(initialQuota);
+
 const disabledSave = computed(() => !reason.value);
+const selectorError = computed(() => flights.value === initialQuota);
 
 onBeforeMount(async () => {
-  await storeQuota.getQuotaReasons();
-
   openModal(modalName);
+  /**
+   * // INFO: get quota after open Modal
+   */
+  await storeQuota.getQuotaReasons();
 })
 
 const onSaveChanges = () => {
@@ -37,13 +40,31 @@ const onSaveChanges = () => {
 /**
  * @param option
  */
-const onInputReason = (option: IdTextType) => {
+const onInputOption = (option: IdTextType) => {
   reason.value = option;
-
 };
 
 const onCloseCross = () => {
   reason.value = undefined;
+};
+
+const onChangeCounter = async (count: number, action: Action) => {
+  if (editAction.value !== action) {
+    reason.value = undefined;
+    baseSelectorRef.value?.clearSelected();
+  }
+  flights.value = count;
+  editAction.value = action;
+
+  if (flights.value === initialQuota) {
+    quotaOptions.value = [];
+    return;
+  }
+  if (flights.value > initialQuota) {
+    quotaOptions.value = storeQuota.getAddOptions;
+    return;
+  }
+  quotaOptions.value = storeQuota.getRemoveOptions;
 };
 
 </script>
@@ -57,10 +78,12 @@ const onCloseCross = () => {
         <div class="quota__form-row">
          <BaseCounter title="Flight lefts"
                       :default-count="initialQuota"
-                      :disabled="disabledCounter" />
+                      @change="onChangeCounter" />
           <BaseSelector placeholder="Select a reason"
+                        ref="baseSelectorRef"
                         :options="quotaOptions"
-                        @input="onInputReason" />
+                        :error="selectorError"
+                        @option="onInputOption" />
         </div>
       </div>
     </template>

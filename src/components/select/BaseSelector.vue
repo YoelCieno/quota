@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, onBeforeMount, computed } from 'vue';
-import type { IdText } from './models';
+import type { IdTextType } from './models';
 
 const props = withDefaults(defineProps<{
-  options: IdText[],
+  options: IdTextType[],
   default?: string,
   placeholder?: string,
   tabindex?: number,
@@ -11,7 +11,7 @@ const props = withDefaults(defineProps<{
   placeholder: 'Select an option',
   tabindex: 0,
 });
-const emit = defineEmits<{(e: 'input', option: IdText): void}>();
+const emit = defineEmits<{(e: 'input', option: IdTextType): void}>();
 
 const selected = ref<string | null>();
 const open = ref<boolean>();
@@ -31,7 +31,7 @@ onBeforeMount(() => {
 /**
  * @param option 
  */
-const onClickOption = (option: IdText) => {
+const onClickOption = (option: IdTextType) => {
   selected.value = option.id;
   open.value = false;
   emit('input', option);

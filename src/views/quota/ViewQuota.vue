@@ -6,21 +6,26 @@ import BaseButton from '@/components/BaseButton.vue';
 import { onBeforeMount, ref, computed } from 'vue';
 import useModal from '@/components/modal/useModal';
 import { modalName } from '@/composables';
-import type { IdText } from '@/components/select/models';
+import { useStoreQuota } from '@/stores';
+import { storeToRefs } from 'pinia';
+import type { IdTextType } from '@/components/select/models';
  
 const { openModal, closeModal } = useModal();
 
 
-// https://mocki.io/v1/68dc88df-74c8-4c51-997a-253cd3109d16
-const options = [{ id: '1', text: 'test 1'}, { id: '2', text: 'test 2'}];
+const storeQuota = useStoreQuota();
 
-const reason = ref<IdText>();
-const initialQuota = ref(2);
+const { quotaOptions } = storeToRefs(storeQuota);
+
+const reason = ref<IdTextType>();
+const initialQuota = ref(1);
 
 const disabledCounter = computed(() => !reason.value);
 const disabledSave = computed(() => !reason.value);
 
-onBeforeMount(() => {
+onBeforeMount(async () => {
+  await storeQuota.getQuotaReasons();
+
   openModal(modalName);
 })
 
@@ -32,8 +37,9 @@ const onSaveChanges = () => {
 /**
  * @param option
  */
-const onInputReason = (option: IdText) => {
+const onInputReason = (option: IdTextType) => {
   reason.value = option;
+
 };
 
 const onCloseCross = () => {
@@ -53,7 +59,7 @@ const onCloseCross = () => {
                       :default-count="initialQuota"
                       :disabled="disabledCounter" />
           <BaseSelector placeholder="Select a reason"
-                        :options="options"
+                        :options="quotaOptions"
                         @input="onInputReason" />
         </div>
       </div>

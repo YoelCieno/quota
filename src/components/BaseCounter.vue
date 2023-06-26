@@ -10,17 +10,22 @@ const props = withDefaults(defineProps<{
   defaultCount: 0,
   title: 'Counter Title',
 })
+const emit = defineEmits<{(e: 'change', counter: number): void}>();
 
 const counter = ref(props.defaultCount);
 
 const onClickRemove = () => {
   if (counter.value > 0) {
     counter.value -= 1;
+    emit('change', counter.value);
   }
 };
 
 const onClickAdd = () => {
-  counter.value += 1;
+  if (counter.value < 3) {
+    counter.value += 1;
+    emit('change', counter.value);
+  }
 };
 </script>
 <template>

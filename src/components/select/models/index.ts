@@ -1,4 +1,5 @@
-export interface IdText  {
+export interface IdTextType  {
   id: string
   text: string
+  type: string
 }

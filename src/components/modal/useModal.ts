@@ -1,32 +1,32 @@
 import { reactive, readonly } from 'vue';
 
 interface UseModalReturn {
-  state: Readonly<{ readonly modals: readonly string[] }>;
+  statusModal: Readonly<{ readonly modals: readonly string[] }>;
   isModalOpen: (modalName: string) => boolean;
   closeModal: (modalName: string) => void;
   openModal: (modalName: string) => void;
 }
 
-const state = reactive<{ modals: string[] }>({
+const statusModal = reactive<{ modals: string[] }>({
   modals: [],
 });
 
 export default (): UseModalReturn => {
-  const isModalOpen = (modalName: string): boolean => state.modals.includes(modalName);
+  const isModalOpen = (modalName: string): boolean => statusModal.modals.includes(modalName);
 
   const closeModal = (modalName: string): void => {
-    state.modals = state.modals.filter((m: string) => m !== modalName);
+    statusModal.modals = statusModal.modals.filter((m: string) => m !== modalName);
   };
 
   const openModal = (modalName: string): void => {
     if (isModalOpen(modalName)) {
       return;
     }
-    state.modals = [...state.modals, modalName];
+    statusModal.modals = [...statusModal.modals, modalName];
   };
 
   return {
-    state: readonly(state),
+    statusModal: readonly(statusModal),
     isModalOpen,
     closeModal,
     openModal,

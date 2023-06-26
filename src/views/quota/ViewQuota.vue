@@ -8,9 +8,9 @@ import useModal from '@/components/modal/useModal';
 import { modalName } from '@/composables';
 import { useStoreQuota } from '@/stores';
 import type { IdTextType, Action } from '@/models';
- 
-const { openModal, closeModal } = useModal();
+import { toast } from 'vue3-toastify';
 
+const { openModal, closeModal } = useModal();
 const storeQuota = useStoreQuota();
 
 const reason = ref<IdTextType>();
@@ -18,23 +18,32 @@ const baseSelectorRef = ref<InstanceType< typeof BaseSelector>>();
 const quotaOptions = ref<IdTextType[]>([]);
 const editAction = ref<Action>();
 
-const initialQuota = 1;
-const flights = ref(initialQuota);
-
 const disabledSave = computed(() => !reason.value);
-const selectorError = computed(() => flights.value === initialQuota);
+const selectorError = computed(() => !reason.value);
+
+
+const initialQuota = 1;
 
 onBeforeMount(async () => {
   openModal(modalName);
   /**
-   * // INFO: get quota after open Modal
+   * // INFO: get quota after open modal
    */
   await storeQuota.getQuotaReasons();
 })
 
-const onSaveChanges = () => {
+const clearQuota = () => {
+  quotaOptions.value = [];
   reason.value = undefined;
+  editAction.value = undefined;
+  baseSelectorRef.value?.clearSelected();
+}
+
+const onSaveChanges = () => {
   closeModal(modalName);
+  clearQuota();
+
+  toast('Quota edited successfully!', { autoClose: 1250, type: 'success' }); 
 };
 
 /**
@@ -45,7 +54,7 @@ const onInputOption = (option: IdTextType) => {
 };
 
 const onCloseCross = () => {
-  reason.value = undefined;
+  clearQuota();
 };
 
 const onChangeCounter = async (count: number, action: Action) => {
@@ -53,14 +62,13 @@ const onChangeCounter = async (count: number, action: Action) => {
     reason.value = undefined;
     baseSelectorRef.value?.clearSelected();
   }
-  flights.value = count;
   editAction.value = action;
 
-  if (flights.value === initialQuota) {
+  if (count === initialQuota) {
     quotaOptions.value = [];
     return;
   }
-  if (flights.value > initialQuota) {
+  if (count > initialQuota) {
     quotaOptions.value = storeQuota.getAddOptions;
     return;
   }
@@ -74,9 +82,12 @@ const onChangeCounter = async (count: number, action: Action) => {
              @close-cross="onCloseCross">
     <template #body>
       <div class="quota__body">
-        <label class="text-h6">Add or remove flights from the subscriber</label>
+        <label class="text-h6">
+          Add or remove flights from the subscriber
+        </label>
         <div class="quota__form-row">
-         <BaseCounter title="Flight lefts"
+         <BaseCounter title="Flights lefts"
+                      :max="3"
                       :default-count="initialQuota"
                       @change="onChangeCounter" />
           <BaseSelector placeholder="Select a reason"
@@ -106,11 +117,11 @@ const onChangeCounter = async (count: number, action: Action) => {
     gap: 16px;
     padding: 0 1.5rem;
     width: 47.6rem;
-    color: $color-primary-black;
+    color: $color-black;
     font-size: 15px;
     &--title {
       width: 47.6rem;
-      color: $color-primary-black;
+      color: $color-black;
     }
   }
   &__form-row {

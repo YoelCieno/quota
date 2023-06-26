@@ -1,5 +1,6 @@
 @use "./variables.scss" as *;
 @use "./base.scss" as *;
+@use "../../node_modules/vue3-toastify/dist/index.css" as *;
 
 #app {
   max-width: 1280px;
@@ -12,7 +13,7 @@
 a,
 .green {
   text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
+  color: $color-primary-green;
   transition: 0.4s;
 }
 

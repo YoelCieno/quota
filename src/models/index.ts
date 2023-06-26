@@ -1,4 +1,4 @@
-export type Action = 'add' | 'remove'
+export type Action = 'add' | 'remove' | null;
 
 export interface IdTextType  {
   id: string

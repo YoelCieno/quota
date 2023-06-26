@@ -48,7 +48,7 @@ const onClick = () => {
   border-radius: $border-radius-m;
   &--medium-wide {
     font-size: 14px;
-    padding: 1rem 2rem;
+    padding: 0.8rem 2rem;
   }
   &--primary {
     background-color: $color-primary-blue;

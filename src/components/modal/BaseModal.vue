@@ -76,7 +76,9 @@ const onCloseCross = () => {
     padding: 0.5rem 1rem;
   }
   &__h2 {
+    font-weight: 500;
     margin-left: 0.25rem;
+    line-height: 2.2;
   }
 
 }

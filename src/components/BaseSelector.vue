@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed } from 'vue';
 import type { IdTextType } from '@/models';
 
 const props = withDefaults(defineProps<{
@@ -119,7 +119,7 @@ defineExpose({ clearSelected });
       width: 0;
       height: 0;
       border: 5px solid transparent;
-      border-color: $color-primary-black transparent transparent transparent;
+      border-color: $color-black transparent transparent transparent;
     }
     &.open {
       border: 1px solid;

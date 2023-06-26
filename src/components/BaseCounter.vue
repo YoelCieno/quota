@@ -6,6 +6,7 @@ import type { Action } from '@/models';
 const props = withDefaults(defineProps<{
   defaultCount?: number,
   disabled?: boolean,
+  max?: number,
   title?: string,
 }>(), {
   defaultCount: 0,
@@ -15,17 +16,27 @@ const emit = defineEmits<{(e: 'change', count: number, action: Action): void }>(
 
 const counter = ref(props.defaultCount);
 
+const currentAction = (): Action => {
+  if (props.defaultCount < counter.value) {
+    return 'add';
+  }
+  if (props.defaultCount > counter.value) {
+    return 'remove';
+  }
+  return null;
+};
+
 const onClickRemove = () => {
   if (counter.value > 0) {
     counter.value -= 1;
-    emit('change', counter.value, 'remove');
+    emit('change', counter.value, currentAction());
   }
 };
 
 const onClickAdd = () => {
-  if (counter.value < 3) {
+  if (props?.max && props.max > counter.value) {
     counter.value += 1;
-    emit('change', counter.value, 'add');
+    emit('change', counter.value, currentAction());
   }
 };
 </script>
@@ -68,10 +79,12 @@ const onClickAdd = () => {
   }
   &__number {
     color: $color-primary-blue-2;
+    font-size: 16.5px;
     font-weight: bold;
+    padding-bottom: 2px;
   }
   &__title {
-    color: $color-primary-black;
+    color: $color-black;
     font-weight: 500;
     margin: 0.25rem 0;
   }

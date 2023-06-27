@@ -82,6 +82,7 @@ const onClickAdd = () => {
     font-size: 16.5px;
     font-weight: bold;
     padding-bottom: 2px;
+    width: 10px;
   }
   &__title {
     color: $color-black;

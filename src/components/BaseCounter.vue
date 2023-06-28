@@ -36,13 +36,13 @@ const onClickRemove = () => {
 const onClickAdd = () => {
   if (props?.max && props.max > counter.value) {
     counter.value += 1;
-    emit('change', counter.value, currentAction());
   }
+  emit('change', counter.value, currentAction());
 };
 </script>
 <template>
   <div class="counter">
-    <h3 class="counter__title">{{  title }}</h3>
+    <h3 class="counter__title">{{ title }}</h3>
     <div class="counter__box">
       <BaseButton title="-"
                   :class-modifiers="['icon', 'icon-less']"

@@ -16,12 +16,11 @@ const props = defineProps<{
   classModifiers?: string[];
   disabled?: boolean;
   customPrefix?: boolean;
-  active?: boolean;
   title?: string;
   tooltip?: string;
 }>();
 
-const emit = defineEmits<{ (e: 'update:modelValue', value: boolean): void }>();
+const emit = defineEmits<{ (e: 'update:modelValue'): void }>();
 
 const defaultClassName = 'base-button';
 const computedClasses = computed(() => {
@@ -34,7 +33,7 @@ const computedClasses = computed(() => {
 });
 
 const onClick = () => {
-  emit('update:modelValue', !props.active);
+  emit('update:modelValue');
 };
 
 </script>

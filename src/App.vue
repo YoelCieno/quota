@@ -3,8 +3,16 @@ import { RouterLink, RouterView } from 'vue-router'
 import BaseTitle from './components/BaseTitle.vue'
 import useModal from '@/components/modal/useModal';
 import { modalName } from '@/composables';
+import { useStoreQuota } from '@/stores';
+import { onBeforeMount } from 'vue';
+
+const storeQuota = useStoreQuota();
 
 const { isModalOpen, openModal } = useModal();
+
+onBeforeMount(async () => {
+  await storeQuota.getQuotaReasons();
+})
 
 const onClickQuota = () => {
   if (!isModalOpen(modalName)) {

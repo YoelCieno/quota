@@ -3,15 +3,15 @@ import BaseModal from '@/components/modal/BaseModal.vue';
 import BaseCounter from '@/components/BaseCounter.vue';
 import BaseSelector from '@/components/BaseSelector.vue';
 import BaseButton from '@/components/BaseButton.vue';
-import { onBeforeMount, ref, computed } from 'vue';
+import { ref, computed } from 'vue';
 import useModal from '@/components/modal/useModal';
 import { modalName } from '@/composables';
-import { useStoreQuota } from '@/stores';
 import type { IdTextType, Action } from '@/models';
 import { toast } from 'vue3-toastify';
+import { useStoreQuota } from '@/stores';
 
-const { openModal, closeModal } = useModal();
 const storeQuota = useStoreQuota();
+const { closeModal } = useModal();
 
 const reason = ref<IdTextType>();
 const baseSelectorRef = ref<InstanceType< typeof BaseSelector>>();
@@ -21,18 +21,10 @@ const editAction = ref<Action>();
 const disabledSave = computed(() => !reason.value);
 const selectorError = computed(() => !reason.value);
 
-
 const initialQuota = 1;
 
-onBeforeMount(async () => {
-  openModal(modalName);
-  /**
-   * // INFO: get quota after open modal
-   */
-  await storeQuota.getQuotaReasons();
-})
-
 const clearQuota = () => {
+  // INFO: this could be a class for ex. new Quota()
   quotaOptions.value = [];
   reason.value = undefined;
   editAction.value = undefined;
@@ -43,7 +35,7 @@ const onSaveChanges = () => {
   closeModal(modalName);
   clearQuota();
 
-  toast('Quota edited successfully!', { autoClose: 1250, type: 'success' }); 
+  toast('Quota edited successfully!', { autoClose: 1250, type: 'success' });
 };
 
 /**
@@ -68,6 +60,7 @@ const onChangeCounter = async (count: number, action: Action) => {
     quotaOptions.value = [];
     return;
   }
+  // INFO: OR action === 'add'
   if (count > initialQuota) {
     quotaOptions.value = storeQuota.getAddOptions;
     return;
@@ -129,7 +122,6 @@ const onChangeCounter = async (count: number, action: Action) => {
     grid-template-columns: 4fr 5fr;
     gap: 1rem;
   }
-
   &__footer {
     display: flex;
     flex-direction: row;
